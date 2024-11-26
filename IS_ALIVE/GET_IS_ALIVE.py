@@ -12,6 +12,7 @@ async def Is_Alive(db = Depends(get_db_MEDSTOCK)):
         query = text("SELECT Is_Alive();")
         result = db.execute(query)
         alive_status = result.scalar()
+        
         return {"response": alive_status}
     except SQLAlchemyError as e:
         error_msg = str(e.__dict__['orig'])
