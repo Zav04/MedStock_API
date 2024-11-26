@@ -34,6 +34,6 @@ api.include_router(POST_login_router_MedReader)
 api.include_router(GET_requerimento_router_MedReader)
 api.include_router(PUT_requerimento_router_MedReader)
 
-if __name__ == "__main__":
-    #uvicorn.run("main:api", reload=True)
-    uvicorn.run("main:api", host="localhost", port=5000, reload=True)
+# if __name__ == "__main__":
+#     #uvicorn.run("main:api", reload=True)
+#     uvicorn.run("main:api", host="localhost", port=5000, reload=True)
