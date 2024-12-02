@@ -2,9 +2,9 @@ from sqlalchemy.sql import text
 from fastapi import Depends, APIRouter
 from sqlalchemy.exc import SQLAlchemyError
 from dependencies import get_db_MEDSTOCK
-from Models.Create_User import C_Create_User
-from Models.Create_Gestor_Responsavel import C_Create_Gestor_Responsavel
-from Models.Create_User_Email import C_Create_User_Email
+from Models.C_Create_User import C_Create_User
+from Models.C_Create_Gestor_Responsavel import C_Create_Gestor_Responsavel
+from Models.C_Create_User_Email import C_Create_User_Email
 from Firebase.FireBase import singup
 from datetime import datetime
 from send_email import enviarEmailRegistro
@@ -15,8 +15,8 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import Depends
 
-@router.post("/MedStock_Create_User/")
-async def MedStock_Create_User(user: C_Create_User, db=Depends(get_db_MEDSTOCK)):
+@router.post("/MedStock_CreateUser/")
+async def MedStock_CreateUser(user: C_Create_User, db=Depends(get_db_MEDSTOCK)):
     try:
         query = text("SELECT inserir_utilizador(:nome, :email,:sexo, :data_nascimento, :role);")
         
@@ -65,8 +65,8 @@ async def MedStock_Create_User(user: C_Create_User, db=Depends(get_db_MEDSTOCK))
             }
         
 
-@router.post("/MedStock_Create_Gestor_Responsavel/")
-async def MedStock_Create_Gestor_Responsavel(user: C_Create_Gestor_Responsavel, db=Depends(get_db_MEDSTOCK)):
+@router.post("/MedStock_CreateGestorResponsavel/")
+async def MedStock_CreateGestorResponsavel(user: C_Create_Gestor_Responsavel, db=Depends(get_db_MEDSTOCK)):
     try:
         query = text("SELECT inserir_gestor_responsavel(:nome, :email,:sexo, :data_nascimento, :role, :setor);")
         
@@ -118,8 +118,8 @@ async def MedStock_Create_Gestor_Responsavel(user: C_Create_Gestor_Responsavel, 
 
 
 
-@router.post("/MedStock_Create_User_Send_Email/")
-async def MedStock_Create_User_Send_Email(user: C_Create_User_Email):
+@router.post("/MedStock_CreateUserSendEmail/")
+async def MedStock_CreateUserSendEmail(user: C_Create_User_Email):
     try:
         
         response=enviarEmailRegistro(user.email,user.password)

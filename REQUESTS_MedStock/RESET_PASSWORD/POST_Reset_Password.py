@@ -2,7 +2,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, APIRouter
 from sqlalchemy.exc import SQLAlchemyError
 from dependencies import get_db_MEDSTOCK
-from Models.Reset_Password import C_ResetPassword
+from Models.C_Reset_Password import C_ResetPassword
 from Firebase.FireBase import resetpassword
 
 router = APIRouter()
@@ -11,8 +11,8 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import Depends
 
-@router.post("/MedStock_Reset_Password/")
-async def MedStock_Reset_Password(Reset_Email: C_ResetPassword, db=Depends(get_db_MEDSTOCK)):
+@router.post("/MedStock_ResetPassword/")
+async def MedStock_ResetPassword(Reset_Email: C_ResetPassword, db=Depends(get_db_MEDSTOCK)):
     try:
         # Define a query com um placeholder para o email
         query = text("SELECT verify_exist_email(:email);")
@@ -32,7 +32,7 @@ async def MedStock_Reset_Password(Reset_Email: C_ResetPassword, db=Depends(get_d
                 "response": status,
                 "error": "Credenciais Invalidas"
                 }
-        return {"response": result}
+        return {"response": result, "data": "Email enviado com sucesso"}
     
     except SQLAlchemyError as e:
         error_msg = str(e.__dict__['orig']).split('\n')[0]
