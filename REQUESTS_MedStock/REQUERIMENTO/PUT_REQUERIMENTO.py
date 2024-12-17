@@ -323,16 +323,16 @@ async def MedStock_SendRequerimento(requerimento: C_Update_Requerimento, db=Depe
         }
 
 @router.put("/MedStock_FinishRequerimento/")
-async def MedStock_FinishRequerimento(requerimento: C_Update_Requerimento, db=Depends(get_db_MEDSTOCK)):
+async def MedStock_FinishRequerimento(requerimento: C_ReavaliationRequerimento, db=Depends(get_db_MEDSTOCK)):
     try:
-
         query = text("""
-            SELECT update_requerimento_finish(:p_requerimento_id,:p_user_id);
+            SELECT update_requerimento_finish(:p_user_id, :p_requerimento_id, :p_comentario);
         """)
 
         result = db.execute(query, {
             "p_requerimento_id": requerimento.requerimento_id,
-            "p_user_id": requerimento.user_id
+            "p_user_id": requerimento.user_id,
+            "p_comentario": requerimento.comentario if hasattr(requerimento, 'comentario') else None
         })
 
         success = result.scalar()
@@ -341,13 +341,13 @@ async def MedStock_FinishRequerimento(requerimento: C_Update_Requerimento, db=De
             db.commit()
             return {
                 "response": True,
-                "data": "Requerimento Finalizado."
+                "data": "Requerimento Finalizado com sucesso."
             }
         else:
             db.rollback()
             return {
                 "response": False,
-                "error": "Erro ao aceitar o requerimento."
+                "error": "Erro ao finalizar o requerimento."
             }
 
     except SQLAlchemyError as e:
@@ -365,6 +365,7 @@ async def MedStock_FinishRequerimento(requerimento: C_Update_Requerimento, db=De
             "response": False,
             "error": error_messages
         }
+
         
         
         
