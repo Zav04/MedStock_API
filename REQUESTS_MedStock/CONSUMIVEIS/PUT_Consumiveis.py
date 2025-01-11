@@ -4,6 +4,7 @@ from sqlalchemy.sql import text
 from dependencies import get_db_MEDSTOCK
 from Models.C_Update_Consumivel import C_Update_Consumivel
 from Models.C_UpdateStockConsumiveis import C_UpdateStockConsumiveis
+import json
 
 router = APIRouter()
 
@@ -58,12 +59,15 @@ async def MedStock_UpdateConsumivel(consumivel:C_Update_Consumivel,db=Depends(ge
 async def MedStock_UpdateStock(stock_update: C_UpdateStockConsumiveis, db=Depends(get_db_MEDSTOCK)
 ):
     try:
+        items_json = json.dumps([item.model_dump() for item in stock_update.consumiveis or []])
+        
+        
         query = text("""
             SELECT update_stock_consumiveis(:consumiveis::JSON);
         """)
         
         result = db.execute(
-            query, {"consumiveis": stock_update.consumiveis.json()}
+            query, {"consumiveis": items_json}
         ).fetchone()
 
         if result.success:
