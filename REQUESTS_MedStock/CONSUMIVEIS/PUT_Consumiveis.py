@@ -56,20 +56,17 @@ async def MedStock_UpdateConsumivel(consumivel:C_Update_Consumivel,db=Depends(ge
     
     
 @router.put("/MedStock_UpdateStock/")
-async def MedStock_UpdateStock(stock_update: C_UpdateStockConsumiveis, db=Depends(get_db_MEDSTOCK)
-):
+async def MedStock_UpdateStock(stock_update: C_UpdateStockConsumiveis, db=Depends(get_db_MEDSTOCK)):
     try:
         items_json = json.dumps(stock_update.consumiveis)
         
         query = text("""
-            SELECT update_stock_consumiveis(:consumiveis);
+            SELECT update_stock_consumiveis(:consumiveis) AS success;
         """)
         
-        result = db.execute(
-            query, {"consumiveis": items_json}
-        ).fetchone()
-
-        if result.success:
+        result = db.execute(query, {"consumiveis": items_json}).fetchone()
+        
+        if result and result[0]:
             db.commit()
             return {
                 "response": True,
