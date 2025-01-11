@@ -59,11 +59,10 @@ async def MedStock_UpdateConsumivel(consumivel:C_Update_Consumivel,db=Depends(ge
 async def MedStock_UpdateStock(stock_update: C_UpdateStockConsumiveis, db=Depends(get_db_MEDSTOCK)
 ):
     try:
-        items_json = json.dumps([item.model_dump() for item in stock_update.consumiveis or []])
-        
+        items_json = json.dumps(stock_update.consumiveis)
         
         query = text("""
-            SELECT update_stock_consumiveis(:consumiveis::JSON);
+            SELECT update_stock_consumiveis(:consumiveis);
         """)
         
         result = db.execute(
