@@ -60,7 +60,7 @@ def enviarEmailRequerimentoCriado(nome_utilizador_pedido:str,receiver_email:str,
 
     # Configuração da mensagem
     message = MIMEMultipart("alternative")
-    message["Subject"] = f"MedStock - Requerimento #{requerimento_id} Aceite"
+    message["Subject"] = f"MedStock - Requerimento #{requerimento_id} Criado"
     message["From"] = sender_email
     message["To"] = receiver_email
 
